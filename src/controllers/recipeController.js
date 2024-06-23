@@ -28,4 +28,34 @@ router.get("/", async (req, res) => {
   }
 });
 
+router.get("/details/:recipeId", async (req, res) => {
+  try {
+    const recipe = await recipeService.getOne(req.params.recipeId);
+    let isOwner = false;
+    let isRecommended = false;
+    if (req.user) {
+      isOwner = recipe.owner.toString() === req.user._id.toString();
+      isRecommended = recipe.recommendList.some(
+        (x) => x.toString() === req.user._id.toString()
+      );
+    }
+    res.render("recipes/details", { ...recipe, isOwner, isRecommended });
+  } catch (err) {
+    const errors = parseError(err).errors;
+    res.render("recipes/details", { errors });
+  }
+});
+
+router.get("/recommend/:recipeId", isUser, async (req, res) => {
+  try {
+    const recipeId = req.params.recipeId;
+    const userId = req.user._id;
+    await recipeService.recommend(recipeId, userId);
+    res.redirect(`/recipes/details/${req.params.recipeId}`);
+  } catch (err) {
+    const errors = parseError(err).errors;
+    res.render("recipes/details", { errors });
+  }
+});
+
 module.exports = router;

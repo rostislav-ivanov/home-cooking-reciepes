@@ -11,3 +11,5 @@ exports.getThreeLatestRecipes = async () =>
     .sort({ createdAt: -1 })
     .limit(3)
     .lean();
+
+exports.getOne = async (recipeId) => await Recipes.findById(recipeId).lean();
