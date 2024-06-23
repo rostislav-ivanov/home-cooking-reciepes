@@ -84,4 +84,16 @@ router.post("/edit/:recipeId", isUser, async (req, res) => {
   }
 });
 
+router.get("/delete/:recipeId", isUser, async (req, res) => {
+  try {
+    const recipeId = req.params.recipeId;
+    const userId = req.user._id;
+    await recipeService.delete(recipeId, userId);
+    res.redirect("/recipes");
+  } catch (err) {
+    const errors = parseError(err).errors;
+    res.render("recipes/details", { errors });
+  }
+});
+
 module.exports = router;
