@@ -108,7 +108,6 @@ router.get("/search", async (req, res) => {
 
 router.post("/search", async (req, res) => {
   const title = req.body.title;
-  console.log(title);
   try {
     const recipes = await recipeService.search(title);
     res.render("recipes/search", { recipes, title });
