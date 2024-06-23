@@ -33,3 +33,19 @@ exports.recommend = async (recipeId, userId) => {
 
   return await recipe.save();
 };
+
+exports.update = async (recipeId, userId, recipeData) => {
+  const recipe = await Recipes.findById(recipeId);
+
+  if (!recipe) {
+    throw new Error("Recipe not found");
+  }
+
+  if (recipe.owner.toString() !== userId) {
+    throw new Error("You are not the owner of this recipe");
+  }
+
+  Object.assign(recipe, recipeData);
+
+  return await recipe.save();
+};

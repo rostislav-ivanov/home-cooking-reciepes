@@ -58,4 +58,30 @@ router.get("/recommend/:recipeId", isUser, async (req, res) => {
   }
 });
 
+router.get("/edit/:recipeId", async (req, res) => {
+  try {
+    const recipe = await recipeService.getOne(req.params.recipeId);
+    if (recipe.owner.toString() !== req.user._id.toString()) {
+      throw new Error("You are not the owner of this recipe");
+    }
+    res.render("recipes/edit", { ...recipe });
+  } catch (err) {
+    const errors = parseError(err).errors;
+    res.render("recipes/edit", { errors });
+  }
+});
+
+router.post("/edit/:recipeId", isUser, async (req, res) => {
+  const recipeData = req.body;
+  const recipeId = req.params.recipeId;
+  const userId = req.user._id;
+  try {
+    await recipeService.update(recipeId, userId, recipeData);
+    res.redirect(`/recipes/details/${req.params.recipeId}`);
+  } catch (err) {
+    const errors = parseError(err).errors;
+    res.render("recipes/edit", { ...recipeData, errors });
+  }
+});
+
 module.exports = router;
