@@ -58,7 +58,7 @@ router.get("/recommend/:recipeId", isUser, async (req, res) => {
   }
 });
 
-router.get("/edit/:recipeId", async (req, res) => {
+router.get("/edit/:recipeId", isUser, async (req, res) => {
   try {
     const recipe = await recipeService.getOne(req.params.recipeId);
     if (recipe.owner.toString() !== req.user._id.toString()) {
@@ -93,6 +93,28 @@ router.get("/delete/:recipeId", isUser, async (req, res) => {
   } catch (err) {
     const errors = parseError(err).errors;
     res.render("recipes/details", { errors });
+  }
+});
+
+router.get("/search", async (req, res) => {
+  try {
+    const recipes = await recipeService.getAll();
+    res.render("recipes/search", { recipes });
+  } catch (err) {
+    const errors = parseError(err).errors;
+    res.render("recipes/search", { errors });
+  }
+});
+
+router.post("/search", async (req, res) => {
+  const title = req.body.title;
+  console.log(title);
+  try {
+    const recipes = await recipeService.search(title);
+    res.render("recipes/search", { recipes, title });
+  } catch (err) {
+    const errors = parseError(err).errors;
+    res.render("recipes/search", { errors });
   }
 });
 

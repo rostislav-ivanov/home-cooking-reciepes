@@ -63,3 +63,13 @@ exports.delete = async (recipeId, userId) => {
 
   return await Recipes.findByIdAndDelete(recipeId);
 };
+
+exports.search = async (title) => {
+  const recipes = await Recipes.find({
+    title: { $regex: title, $options: "i" },
+  })
+    .select("_id title image description")
+    .lean();
+
+  return recipes;
+};
