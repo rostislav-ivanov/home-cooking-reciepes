@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 // TODO: Add your connection string here
-const connectionString = "mongodb://localhost:27017/examBackEndDB";
+const connectionString = "mongodb://localhost:27017/homeCookingRecipesDB";
 
 async function configMongoose() {
   try {
