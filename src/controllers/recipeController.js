@@ -18,4 +18,14 @@ router.post("/create", isUser, async (req, res) => {
   }
 });
 
+router.get("/", async (req, res) => {
+  try {
+    const recipes = await recipeService.getAll();
+    res.render("recipes/catalog", { recipes });
+  } catch (err) {
+    const errors = parseError(err).errors;
+    res.render("recipes/catalog", { errors });
+  }
+});
+
 module.exports = router;
