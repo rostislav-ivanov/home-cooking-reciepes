@@ -1,0 +1,23 @@
+version: "3.8"
+
+services:
+  app:
+    image: rostislav1/home-cooking-recipes
+    container_name: home-cooking-recipes
+    ports:
+      - "3000:3000"
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/homeCookingRecipesDB
+    depends_on:
+      - mongo
+
+  mongo:
+    image: mongo:latest
+    container_name: mongo_db
+    ports:
+      - "27018:27017"
+    volumes:
+      - mongo-data:/data/db
+
+volumes:
+  mongo-data:
