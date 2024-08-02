@@ -9,7 +9,7 @@ This project includes a `docker-compose.yml` file to simplify the process of set
 
 #### 1. Download the `docker-compose.yml` file:
 ```
-curl -O https://raw.githubusercontent.com/rostislav-ivanov/home-cooking-recipes/main/Docker-compose.yaml
+curl -O https://raw.githubusercontent.com/rostislav-ivanov/home-cooking-reciepes/main/Docker-compose.yaml
 
 ```
 
